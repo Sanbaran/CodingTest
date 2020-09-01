@@ -46,6 +46,21 @@ namespace TestPromotionEngine
             Assert.AreEqual(expectedResult, actualResult);
         }
 
+        [TestMethod]
+        public void ScenarioCTest()
+        {
+            //define test input and output values
+            decimal expectedResult = 280;
+            IEnumerable<CartSKU> purchasedSKUs = GetPurchasedSKUs(ScenarioC);
+            IEnumerable<Promotion> activePromotions = GetActivePromotions();
+
+            PromotionEngine systemUnderTest = new PromotionEngine();
+            decimal actualResult = systemUnderTest.CalculateTotal(purchasedSKUs, activePromotions);
+
+            //verify the result
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
         private static IEnumerable<Promotion> GetActivePromotions()
         {
             return new List<Promotion>()
@@ -56,7 +71,7 @@ namespace TestPromotionEngine
                     {
                         new PromotionSKU()
                         {
-                            Id = "A", UnitPrice = 50, UnitsPurchased = 3
+                            Id = SKUIdA, UnitPrice = 50, UnitsPurchased = 3
                         }
                     },
                     FixedPrice = 130
@@ -67,7 +82,7 @@ namespace TestPromotionEngine
                     {
                         new PromotionSKU()
                         {
-                            Id = "B", UnitPrice = 30, UnitsPurchased = 2
+                            Id = SKUIdB, UnitPrice = 30, UnitsPurchased = 2
                         }
                     },
                     FixedPrice = 45
@@ -78,11 +93,11 @@ namespace TestPromotionEngine
                     {
                         new PromotionSKU()
                         {
-                            Id = "C", UnitPrice = 20, UnitsPurchased = 1
+                            Id = SKUIdC, UnitPrice = 20, UnitsPurchased = 1
                         },
                         new PromotionSKU()
                         {
-                            Id = "D", UnitPrice = 15, UnitsPurchased = 1
+                            Id = SKUIdD, UnitPrice = 15, UnitsPurchased = 1
                         }
                     },
                     FixedPrice = 30
