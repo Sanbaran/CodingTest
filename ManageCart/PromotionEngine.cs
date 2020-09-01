@@ -34,6 +34,7 @@ namespace ManageCart
                     else
                     {
                         // else calculate based on the % discount on unit price
+                        total += promotion.SKUs.Select(x => x.UnitsPurchased * (x.UnitPrice * (1 - ((x.DiscountOnUnitPrice ?? 0) / 100)))).Sum();
                     }
 
                     //remove the SKUs on which promotion has been applied

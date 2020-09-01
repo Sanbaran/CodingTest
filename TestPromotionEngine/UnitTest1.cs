@@ -10,11 +10,13 @@ namespace TestPromotionEngine
         public const string ScenarioA = "A";
         public const string ScenarioB = "B";
         public const string ScenarioC = "C";
+        public const string ScenarioFuture = "Future";
 
         public const string SKUIdA = "A";
         public const string SKUIdB = "B";
         public const string SKUIdC = "C";
         public const string SKUIdD = "D";
+        public const string SKUIdE = "E";
 
         [TestMethod]
         public void ScenarioATest()
@@ -52,6 +54,21 @@ namespace TestPromotionEngine
             //define test input and output values
             decimal expectedResult = 280;
             IEnumerable<CartSKU> purchasedSKUs = GetPurchasedSKUs(ScenarioC);
+            IEnumerable<Promotion> activePromotions = GetActivePromotions();
+
+            PromotionEngine systemUnderTest = new PromotionEngine();
+            decimal actualResult = systemUnderTest.CalculateTotal(purchasedSKUs, activePromotions);
+
+            //verify the result
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        [TestMethod]
+        public void ScenarioFutureTest()
+        {
+            //define test input and output values
+            decimal expectedResult = 500;
+            IEnumerable<CartSKU> purchasedSKUs = GetPurchasedSKUs(ScenarioFuture);
             IEnumerable<Promotion> activePromotions = GetActivePromotions();
 
             PromotionEngine systemUnderTest = new PromotionEngine();
@@ -102,6 +119,16 @@ namespace TestPromotionEngine
                     },
                     FixedPrice = 30
                 },
+                new Promotion()
+                {
+                    SKUs = new List<PromotionSKU>()
+                    {
+                        new PromotionSKU()
+                        {
+                            Id = SKUIdE, UnitPrice = 100, UnitsPurchased = 10, DiscountOnUnitPrice = 50 // fifty percent discount on SKU unit price
+                        }
+                    }
+                }
             };
         }
 
@@ -159,6 +186,14 @@ namespace TestPromotionEngine
                         new CartSKU()
                         {
                             Id = SKUIdD, UnitPrice = 15, UnitsPurchased = 1
+                        }
+                    };
+                case ScenarioFuture:
+                    return new List<CartSKU>()
+                    {
+                        new CartSKU()
+                        {
+                            Id = SKUIdE, UnitPrice = 100, UnitsPurchased = 10
                         }
                     };
                 default:
