@@ -24,7 +24,7 @@ namespace ManageCart
             foreach (Promotion promotion in activePromotions)
             {
                 var elligibleSKUs = productsPurchased.Intersect(promotion.SKUs, new SKUComparer());
-                if (elligibleSKUs.Count() == promotion.SKUs.Count())
+                while (elligibleSKUs.Count() == promotion.SKUs.Count())
                 {
                     // check if the promotion has a fixed price
                     if(promotion.FixedPrice.HasValue)
@@ -41,6 +41,8 @@ namespace ManageCart
                     {
                         productsPurchased.Where(x => string.Equals(x.Id, sku.Id)).FirstOrDefault().UnitsPurchased -= sku.UnitsPurchased;
                     }
+
+                    elligibleSKUs = productsPurchased.Intersect(promotion.SKUs, new SKUComparer());
                 }
             }
 
